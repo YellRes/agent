@@ -1,0 +1,39 @@
+
+<div class="top">
+    文件管理
+</div>
+<div class="path">
+    {{fileStr}}
+</div>
+  <div id="container">
+        <div class="load" [class.show]="isActive1=='show'"><app-load></app-load></div>
+    <table class="table">
+        <thead>
+              <th><span>文件名</span></th>
+              <th>操作</th>
+        </thead>
+        
+        <tbody>
+            <tr style="box-shadow:none;">
+                <td  (click)="back()" *ngIf="firstFile"><i class="fa fa-back"></i><label >返回上一级</label></td>
+            </tr>
+
+            <!-- <tr *ngFor="let i of newFileArr | paginate: { itemsPerPage: 8, currentPage: p }" > -->
+            <tr *ngFor="let i of newFileArr " >
+
+                <!--  文件夹有不同的图标 -->
+                <td *ngIf="i.isFile && i"><i class="fa fa-file-o"  ></i> <label>{{i.name}}</label></td>
+                <td *ngIf="!(i.isFile && i)"  (click)="openFile(i)"><i class="fa fa-folder" ></i> <label>{{i.name}}</label></td>
+               
+                
+                <td *ngIf="(i.isTxt==1)"><i class="fa fa-download" title="下载"></i></td>
+                <td *ngIf="!(i.isTxt==1)"><i>---</i></td>
+            </tr>
+           
+                <!-- <pagination-controls (pageChange)="p = $event" class="my-pagination"></pagination-controls> -->
+            
+        </tbody>
+     
+    </table>
+     
+  </div>

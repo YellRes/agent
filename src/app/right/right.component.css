@@ -1,0 +1,117 @@
+/* *{
+    background: #fff ;
+} */
+
+.top{
+    background: none;
+    position: absolute;
+    top: -60px;
+    left: 30px;
+    font-size: 18px;
+    font-weight: 550;
+}
+.path{
+    padding-left: 2%;
+    background-color: #ffffff;
+    max-width: 30%;
+    margin-bottom: 15px;
+    margin-left: 7.5%;
+    color: rgb(0, 0, 0);
+    
+    height: 30px;
+    line-height: 30px;
+    font-weight: bolder;
+    text-align: center;
+    text-align: left;
+    box-shadow:  #999999 1px 0px 1px 0;
+    color: #666666;
+}
+
+
+#container{
+    background: #fff;
+    width: 85% ;
+    margin: 0 auto ;
+    border: 1px solid #eeeeee ;
+    height: 600px;
+    overflow-y: scroll;
+}
+table{
+    width: 85% ;
+    border-collapse: collapse ;
+    margin: 0 auto ;
+   
+}
+
+
+table tr  {
+   
+    text-align: center ;
+    transition: all 0.2s ease;
+   
+
+}
+
+table tr:hover{
+    background: #f3f5f8;
+    box-shadow: #999999 1px 0px 1px 0;
+    font-size: 18px;
+}
+
+
+
+table td , th {
+    width: 40% ;
+    height: 50px ;;
+    border-bottom: 1px solid #ededed ;
+    border-top: 1px solid #ededed ;
+}
+
+table th:first-child , td:first-child{
+    text-align: left;
+}
+
+table th span ,td label{
+    margin-left: 10px ;
+    cursor: pointer;
+
+}
+/* table tr:last-child td{
+    width: 100% ;
+
+} */
+
+i{
+    margin-left: 10px ;
+    font-size: 1.2em ;
+}
+
+i{
+    color: unset;
+}
+tr td:last-child i:hover{
+    color: #3583f7;
+    font-size: 1.3em ;
+}
+.load{
+    position: absolute;
+    top: 15.5%;
+    left: 7.5%;
+    right: 7.5%;
+    bottom: 0.5%;
+    display: none;
+    background-color: #fff;
+}
+
+.load.show{
+    display: block;
+}
+
+/* .my-pagination /deep/ .ngx-pagination {
+    text-align: center ;
+    margin: 10px 0 ;
+    position: absolute ;
+    top: 550px ;
+    left: 460px ;
+
+  } */

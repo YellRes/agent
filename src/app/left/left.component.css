@@ -1,0 +1,128 @@
+@import '~font-awesome/css/font-awesome.css';
+*{
+    color: #444;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: lighter;
+}
+.blue{
+    color: #2f75f5 ;
+    font-weight: bolder;
+}
+.blue1{
+    color: #2f75f5 ;
+
+}
+ul{
+    visibility: visible ;
+}
+li{
+    margin: 10px ;
+    line-height: 60px ;
+    height: 60px ;
+    font-weight: bolder;
+    outline: none;
+    user-select: none;
+    transition: background 0.3s ease,opacity 0.5s ease;
+    visibility: visible ;
+}
+li:hover{
+    background: #ededed ;
+}
+
+i{
+    margin: 0 15px ;
+}
+.left{
+    width: 16%;
+    background-color: #ffffff;
+    border-right: solid 1px #dfe6ee;
+    position: absolute;
+    top: 60px;
+    bottom: -105px;
+    transition: all 0.3s ease;
+    visibility: visible ;
+    opacity: 1;
+    /* display: none; */
+
+}
+.right{
+    position: absolute;
+    left: 16%;
+    right: 0;
+    transition: all 0.3s ease;
+}
+.right.show2{
+left: 0%;
+}
+.left.show{
+    width: 0%;
+    visibility: hidden;
+    /* opacity: 0; */
+    /* display: block; */
+}
+.left.show ul{
+    visibility: hidden;
+    /* display: block */
+}
+.left.show ul li{
+    visibility: hidden;
+    opacity: 0;
+  
+}
+.appR{
+    display: none;
+}
+.appR.show3{
+    display: block;
+}
+.appL{
+    display: none;
+}
+.appL.show3{
+    display: block;
+}
+.appN{
+    display: none;
+}
+.appN.show3{
+    display: block;
+}
+.left>div{
+    font-size: 16px;
+    font-weight: bolder; 
+    height: 40px;
+    line-height: 40px;
+    color: #000000;
+    text-align: center;
+    /* transition: all 0.15s ease; */
+    /* visibility: hidden; */
+    display: none ;
+    user-select: none;
+}
+/* .left>div:hover{
+    color: #2f75f5;
+    background: #dfe6ee;
+} */
+.botton{
+    position:absolute;
+    z-index: 3;
+    left:100.5%;
+    top: 50%;
+    background-color: #ffffff;
+    height: 50px;
+    line-height: 50px;
+    width: 20px;
+    border: 1px solid #ffffff;
+    box-shadow: #999999 2px 2px 1px 0;
+    visibility: visible;
+    font-size: 16px;
+    font-weight: 700;
+    color:#3b5e87;
+    outline: none;
+    user-select: none;
+    transition: all 0.1s ease;
+    opacity: 1 ;
+}
+.botton:hover{
+background-color: #fafafa;
+}

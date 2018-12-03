@@ -1,0 +1,68 @@
+.top{
+    background: none;
+    position: absolute;
+    top: -60px;
+    left: 30px;
+    font-size: 18px;
+    font-weight: 550;
+}
+
+.rightSearch{
+    width: 60% ;
+    position: relative;
+    margin: 0 auto ;
+    margin-bottom: 2px;
+}
+.rightSearch i{
+    font-size: 20px;
+    transition: all ease 0.2s;
+}
+.rightSearch i:hover{
+    color: #71a2ec;
+    font-size: 26px;
+}
+input{
+    width: 100% ;
+    text-align: center ;
+    font-size: 16px ;
+    height: 40px;
+    line-height: 20px ;
+    border: 1px solid #fff ;
+}
+
+i{
+    position: absolute ;
+    right: 10px ;
+    top: 30% ;
+    
+}
+
+table{
+    width: 100% ;
+    background: #ffffff;
+}
+
+table tr  {
+   
+    text-align: center ;
+    transition: all 0.2s ease;
+}
+
+table tr:hover{
+    background: #f3f5f8;
+    box-shadow: #999999 1px 0px 1px 0;
+    font-size: 17px;
+}
+
+table td , th {
+    width: 40% ;
+    height: 50px ;;
+    border-bottom: 1px solid #ededed ;
+}
+
+
+
+table th span ,td label{
+    margin-left: 10px ;
+
+}
