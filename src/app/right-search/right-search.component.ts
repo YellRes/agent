@@ -21,7 +21,7 @@ export class RightSearchComponent implements OnInit {
     let that = this ;
     this.http.post("http://10.52.19.163:8899/process/showProcess",proName).subscribe(data=>{
         that.pro.name = proName ;
-        that.pro.result =  data.result ;
+        that.pro.result = data.result ;
     })
   }
 
@@ -31,5 +31,5 @@ export class RightSearchComponent implements OnInit {
       result : null 
     }
   }
-
+   
 }

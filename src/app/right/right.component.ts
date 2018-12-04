@@ -17,7 +17,8 @@ export class RightComponent implements OnInit {
   file = ['root'] ;
   fileStr = '' ;
   isActive1 = '';
-  
+  baseUrl = "http://10.52.19.163:8899/file/" ;
+  downUrl = "http://10.52.19.163:8899/"
   // selectedFile = '.txt' ;
   // 构建前台对象数组 对象两个属性(路径名 数据)
   // 1.记录当前路径下的数据
@@ -32,7 +33,8 @@ export class RightComponent implements OnInit {
   constructor(private http:HttpClient) { }
 
   ngOnInit() {
-    this.getData('/root/','root') ;
+    let url = this.baseUrl + "showFile" ;
+    this.getData(url,'/root/','root') ;
     // console.log(this.fileArr) ;
     // let that = this ;
     // var timer = setTimeout(function(){
@@ -52,10 +54,11 @@ export class RightComponent implements OnInit {
   //**********函数功能部分
 
   从后台获取数据
-  getData(path,currentPah){
+  getData(url,path,currentPah){
   
     let that = this ;
-     this.http.post("http://10.52.19.163:8899/file/showFile",path).subscribe(data=>{
+    
+     this.http.post(url,path).subscribe(data=>{
           // console.log(data);
           that.fileArr = data.result;         
           // console.log(that.fileArr) ;  //这一行有数据
@@ -152,7 +155,8 @@ export class RightComponent implements OnInit {
      //从后台获取的数据
     //  this.newFileArr = this.check(this.getData(i.name)) ;
     console.log(this.fileStr) ;
-    this.getData('/'+this.fileStr,i.name) ;
+    let url = this.baseUrl + "showFile" ;
+    this.getData(url,'/'+this.fileStr,i.name) ;
 
      var newData = this.fileArr ;
     //  this.newFileArr = this.check(newData) ;
@@ -200,6 +204,47 @@ export class RightComponent implements OnInit {
       // alert("2");
       that.isActive1 = '';
       },200)
+  }
+
+  //下载文件
+  download(i){
+    let head = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let filePath =  "/" + this.fileStr + "/" + i.name ;
+    let obj = {
+      path: filePath
+    }
+    // console.log(filePath) ;
+    let url = this.baseUrl + "download" ;
+    // console.log(JSON.stringify(obj)) ;
+    return this.http.post(url,JSON.stringify(obj),{headers:head}).toPromise().then(
+      // return this.http.post(url,filePath).subscribe(
+      res => {
+        // let file = new File([res],i.name,{ type: "application/octet-stream" }) ;
+        // var objUrl = URL.createObjectURL(file) ;
+        // window.open(objUrl) ;
+        // URL.revokeObjectURL(objUrl) ;
+        console.log(res) ;
+          // console.log(res) ;
+     }
+    // )
+    ).catch(res =>{
+      console.log(res)
+    // let file = new File([res.error.text],i.name,{ type: "application/octet-stream" }) ;
+        // var objUrl = URL.createObjectURL(file) ;
+        // window.location.href = objUrl
+        // URL.revokeObjectURL(objUrl) ;
+        //创建a标签下载
+        const link = document.createElement('a');
+        const blob = new Blob([res.error.text], {type: 'application/octet-stream'});
+        link.setAttribute('href', window.URL.createObjectURL(blob));
+        link.setAttribute('download',i.name);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+  
+    })
+
   }
 
 }

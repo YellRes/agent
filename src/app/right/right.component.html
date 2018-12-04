@@ -27,7 +27,7 @@
                
                 
                 <td *ngIf="(i.isTxt==1)"><i class="fa fa-download" title="下载"></i></td>
-                <td *ngIf="!(i.isTxt==1)"><i>---</i></td>
+                <td *ngIf="!(i.isTxt==1)"><i (click)="download(i)">---</i></td>
             </tr>
            
                 <!-- <pagination-controls (pageChange)="p = $event" class="my-pagination"></pagination-controls> -->

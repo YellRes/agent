@@ -33,7 +33,7 @@
     width: 85% ;
     margin: 0 auto ;
     border: 1px solid #eeeeee ;
-    height: 600px;
+    height: 550px;
     overflow-y: scroll;
 }
 table{
@@ -76,10 +76,7 @@ table th span ,td label{
     cursor: pointer;
 
 }
-/* table tr:last-child td{
-    width: 100% ;
 
-} */
 
 i{
     margin-left: 10px ;

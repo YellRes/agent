@@ -5,7 +5,7 @@
 
 <div class="rightSearch">
        
-    <input type="text" placeholder="请输入你的进程名" [(ngModel)]='pro.name' (key.enter)="getStatus(pro.name)">
+    <input type="text" placeholder="请输入你的进程名" [(ngModel)]='pro.name' (keyup.enter)="getStatus(pro.name)">
     <i class="fa fa-search" (click)="getStatus(pro.name)" style="cursor: pointer;"></i>
 
  
