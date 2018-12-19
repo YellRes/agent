@@ -1,3 +1,9 @@
+.white{
+    /* background: #fff ; */
+    font-size: 20px ;
+    cursor: wait ;
+}
+
 .top{
     background: none;
     position: absolute;
@@ -8,35 +14,49 @@
 }
 
 .rightSearch{
-    width: 60% ;
+    width: 85% ;
     position: relative;
-    margin: 0 auto ;
-    margin-bottom: 2px;
+    margin-left: 7.5%;
+    margin-bottom: 30px;
+    margin-top: 10px;
+    height: 0px;
+    transition: ease 0.3s height;
+    visibility: hidden;
+
+}
+.rightSearch.show{
+   height: 120px;
+   visibility: visible;
 }
 .rightSearch i{
-    font-size: 20px;
-    transition: all ease 0.2s;
+    font-size: 20px;   
 }
 .rightSearch i:hover{
     color: #71a2ec;
     font-size: 26px;
 }
 input{
-    width: 100% ;
+    width: 50% ;
     text-align: center ;
     font-size: 16px ;
     height: 40px;
     line-height: 20px ;
     border: 1px solid #fff ;
+    border-radius: 3px;
+    
 }
 
 i{
     position: absolute ;
     right: 10px ;
-    top: 30% ;
+    top: 12% ;
     
 }
-
+input{
+border: #ededed 1px solid;
+position:absolute;
+left: 0px;
+}
 table{
     width: 100% ;
     background: #ffffff;
@@ -48,11 +68,6 @@ table tr  {
     transition: all 0.2s ease;
 }
 
-table tr:hover{
-    background: #f3f5f8;
-    box-shadow: #999999 1px 0px 1px 0;
-    font-size: 17px;
-}
 
 table td , th {
     width: 40% ;
@@ -65,4 +80,67 @@ table td , th {
 table th span ,td label{
     margin-left: 10px ;
 
+}
+.search{
+    position: fixed;
+    right: 90px;
+    top: 150px;
+    z-index: 2;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: ease 0.3s all;
+    color:#71a2ec;
+    background: #ffffff;
+    box-shadow: #999999 1px 2px 2px 1px;
+}
+.search:hover{
+    background: #71a2ec;
+    color:  #ffffff;
+}
+.search.change{
+    opacity: 0.2;
+}
+.clean{
+    border: 0; 
+    text-align: center;
+    cursor: pointer;
+    background: #3583f7;
+    width: 120px;
+    color: #ffffff;
+    margin-left: 52%;
+    height: 40px;
+    border-radius: 4px;
+    line-height: 40px;
+    font-weight: bolder;
+    /* transition: ease 0.3s all; */
+  
+}
+.clean1{
+    text-align: center;
+    cursor: pointer;
+    background: #3583f7;
+    width: 120px;
+    color: #ffffff;
+    height: 40px;
+    margin-left: 66%;
+    line-height: 40px;
+    font-weight: bolder;
+    /* transition: ease 0.3s all; */
+    border-radius: 4px;
+
+    float: left;
+    margin-top: -40px;
+}
+.clean.show2{
+    display: block;
+}
+.clean:hover{
+    background: #2f72d6;
+    box-shadow: #999999 1px 0px 1px 0;
+}
+.clean1:hover{
+    background: #2f72d6;
+    box-shadow: #999999 1px 0px 1px 0;
 }

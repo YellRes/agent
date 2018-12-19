@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http" ;
-
+import { FileService } from '../file.service' ;
 
 
 @Component({
@@ -14,11 +14,17 @@ export class RightComponent implements OnInit {
   // fileArr = ['文件夹1','1.txt','Ace.java'] ;
   fileArr = [] ;
   firstFile = false ;
-  file = ['root'] ;
+  isWindowServer = false ;
+
+  file =  !this.isWindowServer ? ['root']:['c:'];
   fileStr = '' ;
+  fileStr2 = '' ;
+
   isActive1 = '';
-  baseUrl = "http://10.52.19.163:8899/file/" ;
-  downUrl = "http://10.52.19.163:8899/"
+  baseUrlArr = ["http://10.52.19.163:8899/file/"] ;
+  downUrlArr = ["http://10.52.19.163:8899/"] ;
+  baseUrl = this.baseUrlArr[0] ;
+  downUrl = this.downUrlArr[0] ;
   // selectedFile = '.txt' ;
   // 构建前台对象数组 对象两个属性(路径名 数据)
   // 1.记录当前路径下的数据
@@ -29,38 +35,33 @@ export class RightComponent implements OnInit {
     data : this.fileArr 
   }] ; //管理数据
 
+  windowLocalData = [{
+    name : 'c:' ,
+    data : this.fileArr 
+  }
+  ]
+
   
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient,
+        private fileService:FileService) { }
 
   ngOnInit() {
-    let url = this.baseUrl + "showFile" ;
-    this.getData(url,'/root/','root') ;
-    // console.log(this.fileArr) ;
-    // let that = this ;
-    // var timer = setTimeout(function(){
-    //   // alert("2");
-    //   that.newFileArr = that.check(this.fileArr) ;
-    //   },200)
-   
-    // console.log(this.newFileArr) ;
-    // console.log(this.newFileArr) ;
-    this.fileStr = this.arrToStr(this.file) ;
-    
-
-    // console.log(this.arrToStr(this.file)) ;
-   
+    let getUrl = this.baseUrl + "showFile" ;
+    this.getData(getUrl,'/root/','root') ;
+    this.fileStr = this.arrToStr(this.file,'/') ;
+    this.fileStr2 = this.arrToStr(this.file,' > ') ;
   }
 
   //**********函数功能部分
 
   从后台获取数据
   getData(url,path,currentPah){
-  
+   
     let that = this ;
     
-     this.http.post(url,path).subscribe(data=>{
+     this.fileService.getData(url,path).subscribe(data=>{
           // console.log(data);
-          that.fileArr = data.result;         
+          that.fileArr = data['result'];         
           // console.log(that.fileArr) ;  //这一行有数据
           // console.log(data.result) ;
           that.newFileArr = that.check(that.fileArr) ;
@@ -72,25 +73,28 @@ export class RightComponent implements OnInit {
           } ;
            object.name = currentPah ;
            object.data = that.fileArr ;
-     
-           this.localData.push(object) ;
+          
+           if(this.isWindowServer){
+              this.windowLocalData.push(object) ;
+           }else{
+            this.localData.push(object) ;
+           }
         })
-    // console.log(this.fileArr) ;   // 这一行tm就没有数据了 ？？？？？？
+    // console.log(this.fileArr) ;   // 这一行就没有数据了 ？？？？？？
   }
 
   
 
   //数组转字符串
-  arrToStr(arr){
+  arrToStr(arr,identified){
     let str = '' ;
     let that = this ;
     arr.forEach(function(item,index){
       //若为数组最后一个元素 则无需添加'\'
       if(index == arr.length-1){
         str = str + item ;
-        
       }else{
-        str = str + item + "\/" ;
+        str = str + item + identified ;
       }
     })
     return str ;
@@ -100,19 +104,16 @@ export class RightComponent implements OnInit {
 
   //区分文件以及文件夹
   check(arr){
-    // console.log(arr) ;
     var newArr = [] ;
-    
-      arr.forEach(function(item){
-         
-          //去除带. 的文件夹
-         
+    // 定义 newArrChild1 newArrChild2 两个数组用来接受文件夹 以及 文件
+    var newArrChild1 = [] ;  
+    var newArrChild2 = [] ;
+      arr.forEach(function(item){ 
+          //去除带. 的文件
           var reg0 = /^\./ ;
           var result0 = reg0.test(item) ;
-          // console.log(result0) ;
           if(!result0){
               //判断是否为文件夹
-              // console.log(1) ;
             var reg = /.*\..*/ ;
             var result = reg.test(item) ;
             var txt = item.indexOf('.txt') ;
@@ -125,20 +126,31 @@ export class RightComponent implements OnInit {
             obj.name = item ;
             obj.isFile = result ;
             obj.isTxt = txt ;
-            //返回对象
-            // console.log(obj) ;
-            newArr.push(obj) ;
+            
+            
+            if(!result){
+              newArrChild1.push(obj) ;
+            }else{
+              newArrChild2.push(obj) ;
+            }
+            // newArr.push(obj) ;
             return obj ;
         }
+
       })
+
+      newArr = this.mySort(newArrChild1).concat(this.mySort(newArrChild2))
       // console.log(newArr) ;
       return newArr ;
-      
-      
-    
     }
       
-    
+  // 排序函数
+    mySort(arr){
+       return arr.sort(function(a,b){
+          let i = a.name ;
+          return i.localeCompare(b.name) ;
+        })
+    }
    
  
   
@@ -149,22 +161,28 @@ export class RightComponent implements OnInit {
   // 4.显示文件
   openFile(i){
      this.file.push(i.name) ;
-     this.fileStr = this.arrToStr(this.file) ;
+     this.fileStr = this.arrToStr(this.file,'/') ;
+     this.fileStr2 = this.arrToStr(this.file,' > ') ;
+     
      //显示出 返回上一级 的按钮
      this.firstFile = true ;
      //从后台获取的数据
     //  this.newFileArr = this.check(this.getData(i.name)) ;
     console.log(this.fileStr) ;
-    let url = this.baseUrl + "showFile" ;
-    this.getData(url,'/'+this.fileStr,i.name) ;
-
-     var newData = this.fileArr ;
-    //  this.newFileArr = this.check(newData) ;
+   
+      let url = this.baseUrl + "showFile" ;
+      if(!this.isWindowServer){
+      this.getData(url,'/'+this.fileStr,i.name) ;
+      }else{
+      this.getData(url,this.fileStr,i.name) ;
+      }
+    // console.log(this.fileArr)
+    //  var newData = this.fileArr ;
 
      this.isActive1 = 'show';
      var that = this;
      var timer = setTimeout(function(){
-       // alert("2");
+       // alert("2"); 
        that.isActive1 = '';
        },200)
     
@@ -174,9 +192,12 @@ export class RightComponent implements OnInit {
   back(){
     //修改文件路径
     this.file.pop() ;
-    this.fileStr = this.arrToStr(this.file) ;
+    console.log(this.file) ;
+    this.fileStr = this.arrToStr(this.file,'/') ;
+    this.fileStr2 = this.arrToStr(this.file,' > ') ;
+    
     //返回到 root层时无需 显示按钮
-    if(!(this.fileStr == 'root')){
+    if(!(this.fileStr == 'root' || this.fileStr == 'c:')){
         this.firstFile = true ;
     }else{
       this.firstFile = false ;
@@ -187,14 +208,22 @@ export class RightComponent implements OnInit {
     if(index == 'root'){
       
     }
-    console.log(index) ;
+    console.log(index) ; 
     var data1 = [] ;
-    this.localData.forEach(function(item){
-      if(item.name == index){
-        data1 = item.data ;
-      }
-  
-    })
+    if(this.isWindowServer){
+      this.windowLocalData.forEach(function(item){
+        if(item.name == index){
+          data1 = item.data ;
+        }
+      })
+    }else{
+      this.localData.forEach(function(item){
+        if(item.name == index){
+          data1 = item.data ;
+        }
+      })
+    }
+   
     
     this.newFileArr = this.check(data1) ;
 
@@ -208,43 +237,28 @@ export class RightComponent implements OnInit {
 
   //下载文件
   download(i){
-    let head = new HttpHeaders({ 'Content-Type': 'application/json' });
+    // let head = new Headers({ 'Content-Type': 'application/json' });
     let filePath =  "/" + this.fileStr + "/" + i.name ;
-    let obj = {
-      path: filePath
-    }
-    // console.log(filePath) ;
     let url = this.baseUrl + "download" ;
-    // console.log(JSON.stringify(obj)) ;
-    return this.http.post(url,JSON.stringify(obj),{headers:head}).toPromise().then(
-      // return this.http.post(url,filePath).subscribe(
-      res => {
-        // let file = new File([res],i.name,{ type: "application/octet-stream" }) ;
-        // var objUrl = URL.createObjectURL(file) ;
-        // window.open(objUrl) ;
-        // URL.revokeObjectURL(objUrl) ;
-        console.log(res) ;
-          // console.log(res) ;
-     }
-    // )
-    ).catch(res =>{
-      console.log(res)
-    // let file = new File([res.error.text],i.name,{ type: "application/octet-stream" }) ;
-        // var objUrl = URL.createObjectURL(file) ;
-        // window.location.href = objUrl
-        // URL.revokeObjectURL(objUrl) ;
-        //创建a标签下载
-        const link = document.createElement('a');
-        const blob = new Blob([res.error.text], {type: 'application/octet-stream'});
-        link.setAttribute('href', window.URL.createObjectURL(blob));
-        link.setAttribute('download',i.name);
-        link.style.visibility = 'hidden';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-  
-    })
+    // let options = new RequestOptions({ headers: head, responseType: 3 });
+    let that = this ;
+    this.isActive1 = 'show';
 
+   this.fileService.getData(url,filePath).subscribe(res => {
+           console.log(res) ;
+         },
+         res => {
+        
+          const link = document.createElement('a');
+          const blob = new Blob([res.error.text]);
+          link.setAttribute('href', window.URL.createObjectURL(blob));
+          link.setAttribute('download', i.name);
+          link.style.visibility = 'hidden';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          that.isActive1 = '';
+        })
   }
 
 }

@@ -1,3 +1,9 @@
+.Zblue{
+    background: #3583f7 ;
+}
+
+
+
 .top{
     background: none;
     position: absolute;
@@ -36,9 +42,11 @@
 
 #container{
     background: #fff;
-    width: 85% ;
+    width: 95% ;
     margin: 0 auto ;
-    border: 1px solid #eeeeee ;
+    border: 1px solid #d6d6d6 ;
+    min-height: 350px;
+    margin-top: 20px ;
 }
 table{
     width: 85% ;
@@ -109,16 +117,11 @@ button{
     background-color: #56bd5b;
     box-shadow: 1px  1px 0 0 rgb(158, 158, 158);
 }
-.change1{
-    border: none;
-    box-shadow: none;
-    background: #42a147;
-    font-weight: bold;
-    width: 26.5%;
-
+.show{
+    display: none;
 }
-.change2{
-    color: #3583f7;
+.show.change2{
+    display: block;
 }
 .path{
     
@@ -132,4 +135,29 @@ button{
     line-height: 30px;
     font-weight: bolder;
     text-align: center;
+}
+
+.server >li{
+float: left;
+height: 50px;
+line-height: 50px;
+border-right: #d6d6d6 1px solid;
+
+padding:0 2.5%;
+}
+.server >li:hover{
+    cursor: pointer;
+}
+.server >li.change1{
+height: 48px;
+line-height: 46px;
+border-top: #3583f7 2px solid;
+border-bottom: #ffffff 1px solid;
+transition: all 0.3s ease;
+}
+
+.contain{
+    width: 100%;
+    margin-top: 50px;
+    border-top: 1px solid #d6d6d6;
 }

@@ -14,16 +14,15 @@
     padding-left: 2%;
     background-color: #ffffff;
     max-width: 30%;
-    margin-bottom: 15px;
+    
     margin-left: 7.5%;
     color: rgb(0, 0, 0);
-    
+    z-index: 42;
     height: 30px;
     line-height: 30px;
     font-weight: bolder;
     text-align: center;
     text-align: left;
-    box-shadow:  #999999 1px 0px 1px 0;
     color: #666666;
 }
 
@@ -35,6 +34,9 @@
     border: 1px solid #eeeeee ;
     height: 550px;
     overflow-y: scroll;
+    position: relative;
+    z-index: 1;
+   margin-top: 5px;
 }
 table{
     width: 85% ;
@@ -73,7 +75,6 @@ table th:first-child , td:first-child{
 
 table th span ,td label{
     margin-left: 10px ;
-    cursor: pointer;
 
 }
 
@@ -92,12 +93,13 @@ tr td:last-child i:hover{
 }
 .load{
     position: absolute;
-    top: 15.5%;
-    left: 7.5%;
-    right: 7.5%;
-    bottom: 0.5%;
+    top: 17%;
+    left: 3.5%;
+    right: 3.5%;
+    bottom: 0;
     display: none;
     background-color: #fff;
+    z-index: 4;
 }
 
 .load.show{

@@ -1,39 +1,38 @@
-<div class="top">
+<!-- <div class="top">
     服务器管理
-</div>
-<div class="path">
-        {{fileStr}}
-    </div>
-<div id="container">
-    <!-- <div class="load" [class.show]="isActive1=='show'"><app-load></app-load></div> -->
-<table class="table">
-    <thead>
-          <th><span>服务器名</span></th>
-          <th>切换</th>
-    </thead>
-    
-    <tbody>
-   
+</div> -->
+<br><br><br><br>
 
-        <tr>
-            <td [class.change2]="isChange1Class2"><i class="fa fa-cubes"></i> 服务器1</td>
-            <td><button class="change" (click)="isChange1()" [class.change1]="isChange1Class">{{change}}</button></td>
-        </tr>
-        <tr>
-            <td [class.change2]="isChange2Class2"><i class="fa fa-cubes"  ></i> 服务器2</td>
-            <td><button class="change" (click)="isChange2()" [class.change1]="isChange2Class">{{change1}}</button></td>
-        </tr>
-        <tr>
-            <td [class.change2]="isChange3Class2"><i class="fa fa-cubes"  ></i> 服务器3</td>
-            <td ><button class="change" (click)="isChange3()" [class.change1]="isChange3Class">{{change2}}</button></td>
-        </tr>
-        <tr>
-            <td [class.change2]="isChange4Class2"><i class="fa fa-cubes"  ></i> 服务器4</td>
-            <td><button class="change" (click)="isChange4()" [class.change1]="isChange4Class">{{change3}}</button></td>
-        </tr>
-       
-    </tbody>
- 
-</table>
- 
+<div class="container-fluid">
+    <form action="" class="form-inline"  #addForm="ngForm">
+        <div class="form-group">
+    
+            <div class="col-md-10 ">
+                <input type="text" id="addServer" required
+                     class="form-control" [(ngModel)]="ipName"
+                      name="serverName" 
+                     placeholder="输入IP地址添加服务器">
+            </div>
+    
+        </div>
+        <button class="btn btn-info Zblue" (click)="addServer()" [disabled]="!addForm.form.valid" >确认</button>
+        <button class="btn btn-primary" (click)="clear()" style="margin-left: 10px ">清除</button>
+    </form>
+</div>
+
+
+<!-- <div class="path">
+        {{fileStr}}
+    </div> -->
+<div id="container">
+    <ul class="server" >
+        <li (click)="change(i,num)" [class.change1]="isChange1Class === i" *ngFor="let i of tapArr ;let num = index ;">{{i}}</li>
+    </ul>
+
+    <div class="contain">
+        <div class="show" [class.change2]="isChange1Class2">
+            <app-right-search></app-right-search>
+            <app-right></app-right>
+        </div>
+    </div>
 </div>

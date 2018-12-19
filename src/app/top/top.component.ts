@@ -16,7 +16,7 @@ export class TopComponent implements OnInit {
     description : 'this is pyhton' ,
   } ;
   constructor(private http:HttpClient) { }
-
+ 
   ngOnInit() {
     // this.getData() ;
     // this.postData(this.tail) ;

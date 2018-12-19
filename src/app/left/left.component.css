@@ -33,12 +33,13 @@ i{
     margin: 0 15px ;
 }
 .left{
-    width: 16%;
+    width: 15%;
     background-color: #ffffff;
     border-right: solid 1px #dfe6ee;
-    position: absolute;
+    position: fixed;
     top: 60px;
-    bottom: -105px;
+    bottom: 0px;
+    z-index: 1;    
     transition: all 0.3s ease;
     visibility: visible ;
     opacity: 1;
@@ -47,7 +48,7 @@ i{
 }
 .right{
     position: absolute;
-    left: 16%;
+    left: 15%;
     right: 0;
     transition: all 0.3s ease;
 }
@@ -83,6 +84,11 @@ left: 0%;
 }
 .appN{
     display: none;
+    
+    
+}
+.appN>li{
+    padding-left: 3em;
 }
 .appN.show3{
     display: block;
@@ -111,7 +117,7 @@ left: 0%;
     background-color: #ffffff;
     height: 50px;
     line-height: 50px;
-    width: 20px;
+    width: 15px;
     border: 1px solid #ffffff;
     box-shadow: #999999 2px 2px 1px 0;
     visibility: visible;
@@ -125,4 +131,5 @@ left: 0%;
 }
 .botton:hover{
 background-color: #fafafa;
+cursor: pointer;
 }

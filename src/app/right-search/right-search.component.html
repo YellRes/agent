@@ -1,21 +1,21 @@
-<div class="top">
-        查找
+
+<div class="search" (click)="search()" [class.change]="isActive2=='change'">
+        <i class="fa fa-search"  style="cursor: pointer;font-size: 27px;position: relative;right: -14px;top: 12px;"></i>
 </div>
 
+<div class="rightSearch" [class.show]="isActive1=='show'">
+    <form  #myForm="ngForm">
+    <input type="text" placeholder="请输入你的进程名" [(ngModel)]='proName' (keyup.enter)="getStatus(proName)" 
+            required name="namePro">
+    <div (click)="getStatus(proName)" class="clean" [class.white]="!myForm.form.valid">搜索</div>
+    <!-- {{myForm.form.valid}} -->
+    <div class="clean1 newFileArr"
+     (click)="clean()" [class.show2]="isActive3=='show2'" [class.white]="!myForm.form.valid">清除数据</div>
+    <div style="height:10px;"></div>
 
-<div class="rightSearch">
-       
-    <input type="text" placeholder="请输入你的进程名" [(ngModel)]='pro.name' (keyup.enter)="getStatus(pro.name)">
-    <i class="fa fa-search" (click)="getStatus(pro.name)" style="cursor: pointer;"></i>
-
- 
-</div>
-
-
-<div class="rightSearch">
         <table>
-                <thead>
-                    <tr>
+                <thead >
+                    <tr style=" background: #f5f7fa;font-size: 17px;color: #666666;">
                         <th>进程名</th>
                         <th>进程状态</th>
                     </tr>
@@ -28,16 +28,15 @@
 
                     </tr>
 
-                   
+                    
                 </tbody>
-                
-            </table>
-            <table style="width:50%;margin:0 auto;margin-top:20px;">
-            <tr style="background: cadetblue;color: white;font-weight: bold; ">
+            
+        </table>
+    </form>
+        
 
-                <td  style="border: 0; text-align: center;cursor: pointer;">清除数据</td>
                 
-             </tr>
-            </table>
+                
+         
 </div>
  
