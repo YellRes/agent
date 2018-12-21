@@ -26,7 +26,20 @@
     </div> -->
 <div id="container">
     <ul class="server" >
-        <li (click)="change(i,num)" [class.change1]="isChange1Class === i" *ngFor="let i of tapArr ;let num = index ;">{{i}}</li>
+        <ng-container  *ngFor="let i of tapArr ;let num = index ;">
+            <ng-container *ngIf="num === 0">
+                <li (click)="change(i,num)" [class.change1]="isChange1Class === i">{{i}} </li>
+            </ng-container>
+
+            <ng-container *ngIf="!(num === 0)">
+                <li (click)="change(i,num)" [class.change1]="isChange1Class === i">
+                    {{i}} <i class="fa fa-times" (click)='deleteServer(num)'></i>
+                </li>
+            </ng-container>
+        </ng-container>
+
+        <!-- <li (click)="change(i,num)" [class.change1]="isChange1Class === i" *ngFor="let i of tapArr ;let num = index ;">{{i}} </li> -->
+
     </ul>
 
     <div class="contain">

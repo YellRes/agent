@@ -40,6 +40,7 @@ export class NewRightComponent implements OnInit {
   ngOnInit() {
   }
 
+  //点击发生切换事件
   change(i, index){
     // this.direction = 1 ;
 
@@ -76,6 +77,7 @@ export class NewRightComponent implements OnInit {
         m.getData(m.baseUrl + "showFile",param,fileStr) ;
   } 
   
+  //增加一个服务器
   addServer(){
     let index = this.tapArr.length + 1 ;
     let relUrl = this.fullUrl(this.ipName) ; 
@@ -89,11 +91,19 @@ export class NewRightComponent implements OnInit {
     console.log(this.rightCom.baseUrlArr) ;
     console.log(this.rightCom.downUrlArr) ;
     this.ipName = null ;
-
-
- 
   }
 
+  //删除服务器
+  deleteServer(num){
+    this.tapArr.splice(num,1) ;
+    this.rightCom.downUrlArr.splice(num,1) ;
+    this.rightCom.baseUrlArr.splice(num,1) ;
+
+    console.log(111);
+    
+  }
+
+  //清空输入框中的内容
   clear(){
     this.ipName = null ;
   }

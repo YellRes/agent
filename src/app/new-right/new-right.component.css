@@ -48,6 +48,16 @@
     min-height: 350px;
     margin-top: 20px ;
 }
+
+#container ul li i{
+   
+   font-size: 14px ;
+}
+
+#container ul li i:hover{
+    font-size: 16px ;
+    color: #3583f7 ;
+}
 table{
     width: 85% ;
     border-collapse: collapse ;
@@ -96,7 +106,7 @@ i{
     color: unset;
 }
 tr td:last-child i:hover{
-    color: #3583f7;
+    color: #ededed;
     font-size: 1.3em ;
 }
 .load{
