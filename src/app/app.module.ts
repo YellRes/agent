@@ -1,28 +1,33 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { CommonModule } from '@angular/common';  
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import {ChooseComponent} from './choose/choose.component'
-import { AppComponent } from './app.component';
-import { TopComponent } from './top/top.component';
-import { LeftComponent } from './left/left.component';
-import { RightComponent } from './right/right.component';
-import { RightSearchComponent } from './right-search/right-search.component';
 import { AlertModule } from 'ngx-bootstrap' ;
 import { Routes,RouterModule, ROUTES } from '@angular/router'
 import { MyModelModule } from './my-model/my-model.module'
 import { HttpClientModule } from '@angular/common/http';
-import { NewRightComponent } from './new-right/new-right.component';
-import { LoadComponent } from './load/load.component';
 import {NgxPaginationModule} from 'ngx-pagination';
-import {LoadingComponent} from './loading/loading.component';
-import { RightAddServerComponent } from './right-add-server/right-add-server.component' ;
+
+
+
+import { NewRightComponent } from './new-right/new-right.component';
+import {ChooseComponent} from './choose/choose.component'
+import { AppComponent } from './app.component';
+import { TopComponent } from './top/top.component';
+import { LeftComponent } from './left/left.component';
+import { RightComponent } from './new-right/right/right.component';
+import { RightAddServerComponent } from './new-right/right-add-server/right-add-server.component';
+import { RightSearchComponent } from './new-right/right-search/right-search.component';
+import { LoadingComponent } from './loading/loading.component';
+import { LoadComponent } from './load/load.component';
+
+
 
 // 路由部分
 // const appRoutes: Routes = [
 //   {
 //     path: 'right' ,
-//     component: RightComponent 
+//     component: RightComponent
 //   },
 //   {
 //     path: 'rightSearch' ,
@@ -35,13 +40,14 @@ import { RightAddServerComponent } from './right-add-server/right-add-server.com
     AppComponent,
     TopComponent,
     LeftComponent,
-    RightComponent,
-    RightSearchComponent,
     NewRightComponent,
-    LoadComponent,
     ChooseComponent,
+
+    RightComponent,
+    RightAddServerComponent,
+    RightSearchComponent,
     LoadingComponent,
-    RightAddServerComponent
+    LoadComponent
   ],
   imports: [
     BrowserModule,
@@ -51,7 +57,7 @@ import { RightAddServerComponent } from './right-add-server/right-add-server.com
     FormsModule,
     RouterModule,
     MyModelModule,
-    
+
     AlertModule.forRoot()
   ],
   providers: [],

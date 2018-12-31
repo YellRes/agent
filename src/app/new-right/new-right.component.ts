@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { RightComponent } from '../right/right.component' ;
-import { RightSearchComponent }  from '../right-search/right-search.component'
 import { ViewChild , AfterViewInit} from '@angular/core' ;
+import { RightComponent } from 'src/app/new-right/right/right.component';
+import { RightSearchComponent } from './right-search/right-search.component';
 
 @Component({
   selector: 'app-new-right',
@@ -33,7 +33,7 @@ export class NewRightComponent implements OnInit {
   // change3 = '链接';
   fileStr = '请选择服务器' ;
   direction = 0;
-  
+
 
   constructor() { }
 
@@ -63,11 +63,11 @@ export class NewRightComponent implements OnInit {
     // console.log(m.downUrl);
     this.changeToGetData(m,false,["root"],"root","/root") ;
     }else{
-     
+
       this.changeToGetData(m,true,["c:"],"c:","c:") ;
       n.ipAddress = m.downUrlArr[index] ;
     }
-  
+
   }
 
   changeToGetData(m,isWindowServer,file,fileStr,param){
@@ -75,14 +75,14 @@ export class NewRightComponent implements OnInit {
         m.file = file ;
         m.fileStr2 = fileStr ;
         m.getData(m.baseUrl + "showFile",param,fileStr) ;
-  } 
-  
+  }
+
   //增加一个服务器
   addServer(){
     let index = this.tapArr.length + 1 ;
-    let relUrl = this.fullUrl(this.ipName) ; 
+    let relUrl = this.fullUrl(this.ipName) ;
     this.tapArr.push('服务器'+index) ;
-  
+
     this.rightCom.baseUrlArr.push(relUrl + "file/") ;
     this.rightCom.downUrlArr.push(relUrl) ;
 
@@ -100,7 +100,7 @@ export class NewRightComponent implements OnInit {
     this.rightCom.baseUrlArr.splice(num,1) ;
 
     console.log(111);
-    
+
   }
 
   //清空输入框中的内容

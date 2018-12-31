@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http" ;
-import { FileService } from '../file.service' ;
+import { FileService } from '../../file.service' ;
 
 @Component({
   selector: 'app-right-search',
@@ -13,10 +13,10 @@ export class RightSearchComponent implements OnInit {
   isActive2 = '';
   isActive3 = '';
   ipAddress = "http://10.52.19.163:8899" ;
-  proName : null 
+  proName : null
   pro = {
     name : '' ,
-    result : null 
+    result : null
   }
 
   constructor(private http:HttpClient,
@@ -30,26 +30,26 @@ export class RightSearchComponent implements OnInit {
     this.fileService.getData( this.ipAddress + "process/showProcess",proName).subscribe(data=>{
         that.pro.name = that.proName ;
         that.pro.result = data['result'] ;
-          
+
     })
-     
+
   }
- 
+
   clean(){
     this.pro = {
       name : '' ,
-      result : null 
-    } 
+      result : null
+    }
 
     this.proName = null ;
   }
-  
+
   search(){
    if(this.direction == 1 ){
      this.direction = 0;
     this.isActive1 = 'show';
     this.isActive2 = 'change';
-   } 
+   }
    else{
     this.direction = 1;
     this.isActive1 = '';

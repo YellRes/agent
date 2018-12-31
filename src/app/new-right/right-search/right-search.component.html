@@ -4,13 +4,13 @@
 </div>
 
 <div class="rightSearch" [class.show]="isActive1=='show'">
-    <form  #myForm="ngForm">
-    <input type="text" placeholder="请输入你的进程名" [(ngModel)]='proName' (keyup.enter)="getStatus(proName)" 
+    <form >
+    <input type="text" placeholder="请输入你的进程名" [(ngModel)]='proName' (keyup.enter)="getStatus(proName)"
             required name="namePro">
-    <div (click)="getStatus(proName)" class="clean" [class.white]="!myForm.form.valid">搜索</div>
+    <div (click)="getStatus(proName)" class="clean" >搜索</div>
     <!-- {{myForm.form.valid}} -->
     <div class="clean1 newFileArr"
-     (click)="clean()" [class.show2]="isActive3=='show2'" [class.white]="!myForm.form.valid">清除数据</div>
+     (click)="clean()" [class.show2]="isActive3=='show2'" >清除数据</div>
     <div style="height:10px;"></div>
 
         <table>
@@ -20,7 +20,7 @@
                         <th>进程状态</th>
                     </tr>
                 </thead>
-        
+
                 <tbody>
                     <tr >
                         <td>{{pro.name}}</td>
@@ -28,15 +28,15 @@
 
                     </tr>
 
-                    
+
                 </tbody>
-            
+
         </table>
     </form>
-        
 
-                
-                
-         
+
+
+
+
 </div>
- 
+

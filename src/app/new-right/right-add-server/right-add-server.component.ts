@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ViewChild , AfterViewInit} from '@angular/core' ;
-import { NewRightComponent } from '../new-right/new-right.component'
+import { NewRightComponent } from '../new-right.component'
 
 @Component({
   selector: 'app-right-add-server',

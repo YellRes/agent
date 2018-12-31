@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http" ;
-import { FileService } from '../file.service' ;
+import { FileService } from '../../file.service' ;
 
 
 @Component({
@@ -32,16 +32,16 @@ export class RightComponent implements OnInit {
   // 3.返回上一级 pop出一个对象
   localData = [{
     name : 'root' ,
-    data : this.fileArr 
+    data : this.fileArr
   }] ; //管理数据
 
   windowLocalData = [{
     name : 'c:' ,
-    data : this.fileArr 
+    data : this.fileArr
   }
   ]
 
-  
+
   constructor(private http:HttpClient,
         private fileService:FileService) { }
 
@@ -56,12 +56,12 @@ export class RightComponent implements OnInit {
 
   从后台获取数据
   getData(url,path,currentPah){
-   
+
     let that = this ;
-    
+
      this.fileService.getData(url,path).subscribe(data=>{
           // console.log(data);
-          that.fileArr = data['result'];         
+          that.fileArr = data['result'];
           // console.log(that.fileArr) ;  //这一行有数据
           // console.log(data.result) ;
           that.newFileArr = that.check(that.fileArr) ;
@@ -73,7 +73,7 @@ export class RightComponent implements OnInit {
           } ;
            object.name = currentPah ;
            object.data = that.fileArr ;
-          
+
            if(this.isWindowServer){
               this.windowLocalData.push(object) ;
            }else{
@@ -83,7 +83,7 @@ export class RightComponent implements OnInit {
     // console.log(this.fileArr) ;   // 这一行就没有数据了 ？？？？？？
   }
 
-  
+
 
   //数组转字符串
   arrToStr(arr,identified){
@@ -106,9 +106,9 @@ export class RightComponent implements OnInit {
   check(arr){
     var newArr = [] ;
     // 定义 newArrChild1 newArrChild2 两个数组用来接受文件夹 以及 文件
-    var newArrChild1 = [] ;  
+    var newArrChild1 = [] ;
     var newArrChild2 = [] ;
-      arr.forEach(function(item){ 
+      arr.forEach(function(item){
           //去除带. 的文件
           var reg0 = /^\./ ;
           var result0 = reg0.test(item) ;
@@ -117,7 +117,7 @@ export class RightComponent implements OnInit {
             var reg = /.*\..*/ ;
             var result = reg.test(item) ;
             var txt = item.indexOf('.txt') ;
-        
+
             var obj = {
               name: null,
               isFile: null ,
@@ -126,8 +126,8 @@ export class RightComponent implements OnInit {
             obj.name = item ;
             obj.isFile = result ;
             obj.isTxt = txt ;
-            
-            
+
+
             if(!result){
               newArrChild1.push(obj) ;
             }else{
@@ -143,7 +143,7 @@ export class RightComponent implements OnInit {
       // console.log(newArr) ;
       return newArr ;
     }
-      
+
   // 排序函数
     mySort(arr){
        return arr.sort(function(a,b){
@@ -151,9 +151,9 @@ export class RightComponent implements OnInit {
           return i.localeCompare(b.name) ;
         })
     }
-   
- 
-  
+
+
+
   // 双击打开文件夹
   // 1.获取文件夹信息
   // 2.将文件名添加到路径名后
@@ -163,13 +163,13 @@ export class RightComponent implements OnInit {
      this.file.push(i.name) ;
      this.fileStr = this.arrToStr(this.file,'/') ;
      this.fileStr2 = this.arrToStr(this.file,' > ') ;
-     
+
      //显示出 返回上一级 的按钮
      this.firstFile = true ;
      //从后台获取的数据
     //  this.newFileArr = this.check(this.getData(i.name)) ;
     console.log(this.fileStr) ;
-   
+
       let url = this.baseUrl + "showFile" ;
       if(!this.isWindowServer){
       this.getData(url,'/'+this.fileStr,i.name) ;
@@ -182,20 +182,20 @@ export class RightComponent implements OnInit {
      this.isActive1 = 'show';
      var that = this;
      var timer = setTimeout(function(){
-       // alert("2"); 
+       // alert("2");
        that.isActive1 = '';
        },200)
-    
+
   }
 
-  //返回上一层按钮 
+  //返回上一层按钮
   back(){
     //修改文件路径
     this.file.pop() ;
     console.log(this.file) ;
     this.fileStr = this.arrToStr(this.file,'/') ;
     this.fileStr2 = this.arrToStr(this.file,' > ') ;
-    
+
     //返回到 root层时无需 显示按钮
     if(!(this.fileStr == 'root' || this.fileStr == 'c:')){
         this.firstFile = true ;
@@ -206,9 +206,9 @@ export class RightComponent implements OnInit {
     //获取当前对象数组中的数据
     var index = this.file[this.file.length-1] ;
     if(index == 'root'){
-      
+
     }
-    console.log(index) ; 
+    console.log(index) ;
     var data1 = [] ;
     if(this.isWindowServer){
       this.windowLocalData.forEach(function(item){
@@ -223,8 +223,6 @@ export class RightComponent implements OnInit {
         }
       })
     }
-   
-    
     this.newFileArr = this.check(data1) ;
 
     this.isActive1 = 'show';
@@ -248,7 +246,7 @@ export class RightComponent implements OnInit {
            console.log(res) ;
          },
          res => {
-        
+
           const link = document.createElement('a');
           const blob = new Blob([res.error.text]);
           link.setAttribute('href', window.URL.createObjectURL(blob));

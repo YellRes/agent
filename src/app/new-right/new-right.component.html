@@ -6,16 +6,16 @@
 <div class="container-fluid">
     <form action="" class="form-inline"  #addForm="ngForm">
         <div class="form-group">
-    
+
             <div class="col-md-10 ">
                 <input type="text" id="addServer" required
                      class="form-control" [(ngModel)]="ipName"
-                      name="serverName" 
+                      name="serverName"
                      placeholder="输入IP地址添加服务器">
             </div>
-    
+
         </div>
-        <button class="btn btn-info Zblue" (click)="addServer()" [disabled]="!addForm.form.valid" >确认</button>
+        <button class="btn btn-info " (click)="addServer()" [disabled]="!addForm.form.valid" >确认</button>
         <button class="btn btn-primary" (click)="clear()" style="margin-left: 10px ">清除</button>
     </form>
 </div>

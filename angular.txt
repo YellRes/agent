@@ -1,0 +1,605 @@
+angular 
+一. 服务 ===> 访问数据
+    1.创建service
+        ng g service hero 
+        修饰器 @Injectable()  
+        在 heroService 中写出获取数据的方法
+            getData(): void
+    2.使用service
+        //导入service
+        import { HeroService } from '../hero.serice'
+        ....
+        //创建服务对象
+        constructor(private heroService: HeroService){} 
+        //调用服务对象中的函数
+        getData(): void{
+            this.heroService.getDatas() ;
+        }
+    3.异步操作(observable)
+        若获取数据 时为异步操作(当然 很多时候为异步操作) 就要使用 observable 对象
+        具体步骤
+            ⅰ import { Observable , of } from 'rxjs' -- 导入 Observable 对象
+            ⅱ getHeroes(): Observable<Hero[]>{  -- Observable<> 包住数据类型
+                    return of(HEROES) ;          -- of() 包住返回值
+                }
+            ⅲ this.heroService.getHeroes().subscribe(heroes => this.heroes = heroes) ;
+                -- 在 subscribe() 的回调函数中完成 赋值操作         
+    4.使用服务的情景
+        服务器获取数据、验证用户输入或直接往    控制台中写日志    
+    
+    补充说明:
+        服务的注册方法: 
+        1). 全局注册
+            @Injectable({
+                providedIn: 'root' ;
+            })
+        2). 在NgModel中的providers
+             @NgModule({
+                providers: [
+                    BackendService,
+                    Logger
+                ],
+                ...
+                })  
+
+        3). 注册在 Component 中
+            @Component({
+                selector:    'app-hero-list',
+                templateUrl: './hero-list.component.html',
+                providers:  [ HeroService ]
+            })
+
+      
+
+二. 路由
+    1. 新建一个路由模块文件
+        ng g module apps --routing --flat --module=app
+        --flat 把这个文件放进了 src/app 中，而不是src/app/apps中的目录中。
+        --module=app 告诉 CLI 把它注册到 AppModule 的 imports 数组中。  
+    2. 导入RouterModule, Routes       
+        import { RouterModule, Routes} from '@angular/router' 
+        @NgModule({
+            exports: [RouterModule], -- 导出 RouterModule 便于使用
+        })   
+        整个系统只有 AppRoutingModule 才会使用 forRoot，其他的子路由模组都是使用 forChild  
+
+    3. 定义路由对象
+        const routes: Routes = [
+            {path:'heroes', component:HeroesComponent} ,
+        ]
+        初始化路由对象 
+        在 @NgModule 的 import 中
+        imports: [ RouterModule.forRoot(routes)] 
+
+    4. 定义路由出口
+        <router-outlet></router-outlet>
+        eg: router-outlet 放在 HeroesComponent 以前所在的位置
+            当 url 到 /heroes  HeroComponent 会显示
+
+    5. 路由链接(routerLink)
+        <a routerLink='/index'>  定位到 index
+        {path: '', redirectTo: '/dashboard', pathMatch: 'full'} -- 当地址为空时候 跳转到 dashboard 的页面
+         补充: 包含 万能路由的模块 必须放到 导入数组 的最后面 
+        routerLinkActive 路由被选中时候的样式  
+        例如: 
+            routerLinkActive="active" 当路由被选中时候 给该元素加上 active 样式 
+            不仅如此 该上层的父元素 也会加上 active 的样式
+            若不想这样， 则父元素加上 [routerLinkActiveOptions]="{exact: true}"
+           
+
+
+    6. 参数路由
+        路由表中的配置 : {path: '/detail/:id', component: } 
+        <a routeLink="/detail/{{hero.id}}">  
+    
+    7. 路由的延迟载入 预先载入
+        延迟载入路由的定义: 打开页面并不会加载该路由 直到打开该路由时 才会加载它 
+        缺点: 加载路由 速度过慢
+        预先载入:  打开页面时候 把那些可延迟加载的路由 通过异步加载 不会影响到画面的显示
+        ps： 延迟载入 + 预先加载 是最好的使用方式
+
+    8. Router Service 
+        定义: 加入了路由的模块，里面就有一个Router的Service可以使用
+        使用方式: 
+            export class LoginComponent implements OnInit {
+
+                constructor(private router: Router) { }
+                ngOnInit() {
+                }
+            }
+            1. 使用 navigateByUrl 函式并传入字串
+                this.router.navigateByUrl('home')
+            2. 使用 navigate 传入数组
+                this.router.navigate(['home'])
+    
+    9. 路由参数
+        1. Query String表示法
+            网址格式: http://localhost:4200/products?id=101
+            程序写法: this.router.navigate(['products'], {
+                        queryParams: {
+                        id: 101
+                        }
+                    });
+            Template写法: 
+                <a [routerLink]="['products']" [queryParams]="{ id: 101 }">Prodcuts</a>
+
+            取得参数: 
+                export class ProductsComponent implements OnInit {
+                    constructor(private route: ActivatedRoute) { }
+                    ngOnInit() {
+                        // 第一種方式（較推薦）
+                        this.route.queryParams.subscribe((queryParams) => {
+                            console.log(queryParams['id']);
+                        });
+                        // 第二種方式
+                        console.log(this.route.snapshot.queryParams['id']);
+                    }
+                }     
+        2.  matrix URL notation表示法
+            网址格式:  http://localhost:4200/products;id=101
+            程序写法:  this.router.navigate(['products', { id: 101 }]);
+            取得参数的方式:  1).this.route.params['id']  2).this.route.snapshot.params['id'] 
+
+
+    
+
+
+三. Http    (官网地址🗺) https://www.angular.cn/guide/http
+    1. 设置查询参数
+        预期的url : https://jsonplaceholder.typicode.com/todos?_page=1&_limit=10
+        1)创建HttpParams对象 
+            ①set()
+            const params = new HttpParams().set("_page", "1").set("_limit", "10");
+            使用方式: ....get(url,{params}) ;
+
+            ②使用 fromString
+            const params = new HttpParams({fromString: "_page=1&_limit=10"});
+            使用方式: 如上
+
+            ③使用 fromObject
+            const params = new HttpParams({ fromObject: { _page: "1", _limit: "10" } }); 
+            使用方式: 如上
+
+    2. 获取完整响应
+        HttpClient 服务返回的是响应体，有时候我们需要获取响应头的相关信息，
+        这时你可以设置请求 options 对象的 observe 属性值为 response 来获取完整的响应对象。
+        this.http.get("https://jsonplaceholder.typicode.com/todos/1", {
+            observe: "response"
+        })
+        .subscribe(res => {
+            console.dir("Response: " + res.status);
+        });
+
+    3. 设置响应类型
+         设置 options 对象中的 responseType: "text" 
+             --- 除了支持json 和 text 类型外，还支持 arraybuffer 和 blob 
+          this.http.get("https://jsonplaceholder.typicode.com/todos/1", {
+                 responseType: "text"
+            }).subscribe(text => {
+              console.log("Response: " + text);
+            });
+
+    4. 设置Http Headers 
+         构建HttpHeaders对象  调整请求头
+         const headers = new HttpHeaders().set("token", "iloveangular");
+         this.http.get("https://jsonplaceholder.typicode.com/todos/1", {headers})
+
+
+--------day5--------
+详解模板 组件
+1. 插值表达式 显示组件的属性
+
+2. 内联模板  直接写在 template 中 
+   模板文件 一个组件的html文件 通过templateUrl 导入
+   -- 建立组件不要模板文件 ng g c hero -it
+
+3. 可以在构造函数中初始化 变量
+    eg: title: string ;
+        myHero: string ;
+        constructor(){
+            this.title = ..
+            this.myHero = .. 
+        }
+4. 
+
+
+--------day6--------
+angular的模块语法
+1. 插值表达式 -- {{}} (没有中括号 双引号)
+    使用方式： 计算后的字符串 插入到标签的文本、属性内部
+        <p>My current hero is {{currentHero.name}}</p> -- 标签的文本
+        <img src="{{heroImageUrl}}" style="height:30px"> -- 标签的属性
+        
+    特殊用法： 插值表达式会计算 内部表达式的值 以及 调用宿主组件的方法
+        <p>The sum of 1 + 1 is not {{1 + 1 + getVal()}}</p>  -- 宿主组件的方法
+
+2. 属性的绑定   --- [] = '' 
+    [属性名] = '变量值'(该变量值无需 使用插值表达式)
+    这里的属性有两种 1. 标签内部的属性   2. 在父子组件的子组件中  子组件的属性包括了 子组件ts文件中定义的属性
+
+    特殊的绑定形式
+    --  attribute 的绑定
+        [attr.attr的名字] = '变量名称'
+    --  css类 的绑定
+        [class.类名] = '模板表达式'
+        若模板表达式为 true 则给标签加上此类名 反之 不加此类
+    --  style 的绑定 (设置 单一样式 的好方法)
+        [style.style-property] = '模板表达式'
+        例: <button [style.font-size.em]="isSpecial ? 3 : 1" >Big</button>
+            .em 为字体单位 3em 或是 1em
+
+3. 事件的绑定   --- ()=''
+    on-click=""  点击事件的规范写法
+    -- $event
+         事件载荷 用来传递此事件的信息
+         若标签是原生dom, $event就有target, target.value这样的属性 
+         👉仔细看这个例子  <input [value]='name' (input)="name = $event.target.value">
+         😃 就类型于 [(ngModule)] 双向数据绑定
+    -- EventEmitter
+         父子组件中 子组件要传递值的时候使用
+         https://www.angular.cn/guide/template-syntax 👈此处有讲解
+
+4. 双向数据绑定  --- [(x)]
+    [(x)] 语法结合了属性绑定的方括号 [x] 和事件绑定的圆括号 (x)。
+    -- 只支持表单元素 
+
+5. 内置指令
+    属性型指令
+      -- NgClass
+            [ngClass]='currentClass' 设置多个类 好方法
+            currentClass 为对象 {key:类名,value:true/false}
+      -- NgStyle 用法类似于 NgClass
+
+      -- ngModel 
+            [(ngModel)] = 'name' (ngModelChange) = 'name = $event'
+
+    功能型指令
+
+      -- *NgIf
+            
+
+      -- *NgFor
+            可迭代对象中的每一个条目实例化一个模板  
+
+6. 模板引用变量(#age)
+    <input id="one" #age> 
+        age就是input标签的引用  age.id --> input中的id
+    定义符: # 或者 ref-
+
+7. 输入输出 属性
+    输入属性
+        带有@Input装饰器的课设置属性 通过属性绑定的形式被绑定时，值会“流入”这个属性
+        👊说白了 就是把一个变量变为了 公有变量
+    输出属性
+        带有@Output装饰器的可观察对象的属性  个属性几乎总是返回 Angular 的EventEmitter。 当它通过事件绑定的形式被绑定时，值会“流出”这个属性。
+        这个对象 调用 emit(num) 可以把num传出到其他的组件上 (目前还不是 很懂😭)
+
+8. 操作符
+    管道" | "   
+        左边为参数 右边为函数
+    安全导航操作符 (?.)
+        a?.b?.c  (a中不知是否有b属性)
+    非空断言操作符
+        a!.b ( 让ts不做严格空值检测 )
+    
+    类型转换函数 $any （$any( <表达式> )）
+        把一个对象 转换成 any 类型
+         $any 转换函数可以和 this 联合使用，以便访问组件中未声明过的成员。
+            {{$any(this).member}}
+     
+    -- 未完待续--
+
+--------day7--------
+导入BootStraps 👉@import url('https://unpkg.com/bootstrap@3.3.7/dist/css/bootstrap.min.css');
+(官网地址🗺)   https://www.angular.cn/guide/forms
+(本机实例地址💻) E:\capgemini\exa\newAgent\src\app\hero-form\hero-form.component.html 
+1.表单验证
+    一.[(ngModel)]来绑定表单 表单有了新的css属性  👇
+    ng-untouche(未被访问) ng-touched(访问过)   👉 是否被点击过     
+    ng-pristine(值没修改)  ng-dirty(值修改过)  👉 是否修改过
+    ng-valid(合法的)     ng-invalid(不合法)    👉 是否满足 表单的需求(required)
+    事件 触发还是组件的属性
+    form中的input若绑定了 [(ngModel)]  input中必须要绑定 name的属性
+    ngModel 只能用于表单元素
+
+    此外给 设置 name 属性即: name = ""  👉 Angular 表单用它注册控件
+
+   二. 显示和隐藏验证错误信息
+    1) 添加模板引用变量 
+        #name="ngModel"  name就代表一个组件 
+        heroForm.reset()  清除input组件中的 状态
+    
+    表单ngSubmit 提交表单
+    1) 在表单上设置 (ngSubmit) = "onSubmit()" 提交事件
+        #heroForm = "ngForm"    heroForm 变量是一个到 NgForm 指令的引用，它代表该表单的整体。
+    2) 在提交按钮上设置  
+        [disabled]="!heroForm.form.valid"  
+
+    三. 表单的验证器
+        还没有看 以后补完(🤦‍)
+
+拓展angular FormControl
+
+
+??????? html中生成的对象 在ts文件中显示
+
+2. 用户输入
+    发生的dom事件 传递给事件处理器
+    1) 绑定用户的输入事件 
+        (Dom事件名称)="模板语句"
+    2) $event 对象
+        发生事件的 事件对象
+    3)  不适用 $event  使用模块引用变量
+            组件代码从视图中获得了干净的数据值。再也不用了解 $event 变量及其结构了
+    4) (keyup.enter) 方法 只监听 键盘的enter 事件
+        (click)  点击事件 (dbclick) 双击事件
+        (dblclick) 双击事件
+        (blur) 方法 组件失去焦点后 会使用的方法 
+        (ngModelChange) input输入字段发生变化时调用
+        (load) 和 (unload) 事件会在用户进入或离开页面时被触发 
+        (mouserover),(mouseout) 鼠标移入 移出 css中的hover😀
+
+--------day8--------
+一. 组件交互   (官网地址🗺) https://angular.cn/guide/component-interaction
+              (本机实例地址💻) E:\Google DownLoad\angular\toh-pt0\src\app\hero-details\hero-details.component.ts
+    1.父组件到子组件
+        ⅰ.父子组件之间的 谐同
+            @input(传入)
+            父组件: 把自己属性传给子组件的属性  [子组件属性名] = '父组件属性名'
+                    👉 这里的属性 说白了 一般就是 ts文件中定义的变量
+            子组件: 1) 定义属性时 要加上@input(传入) 
+
+            @output(传出)
+            子组件: 1) 定义属性时 要加上@output(传入) 变量 = new EventEmitter<boolean>() ;
+                    2) 当事件触发时 调用 emit()事件 
+            父组件: 1) 使用(voted)="方法名($event)" 来处理子组件中的事件 
+
+        ⅱ.父组件通过本地变量访问子组件的值
+            引用变量
+            定义: 父组件中 将子组件定义为一个 引用变量(#名称) 通过 引用变量来访问其中的 属性 方法 
+            缺点😴：只是在模板中访问 父组件的 类文件 无法访问
+
+            @ViewChild() 
+            定义: 将子组件作为ViewChild 注入到父组件中
+            使用方法⚙: 1) 导入 ViewChild 装饰器 , 挂上 AfterViewInit 生命周期钩子
+                            import { ViewChild , AfterViewInit } from '@angular/core'
+                            ngAfterViewInit(){  }
+                        2) 通过 @ViewChild 装饰器 , 将子组件注入到父组件的私有属性 timer中
+                            @ViewChild(子组件)
+                            private timer(属性名): 子组件名称
+                        3)  就可以用过 timer 来访问子组件中的方法
+                            timer.stop() --- 详情见angular 官网例子
+            
+            使用服务 (官网的例子不是很了解 😫)
+
+二. 组件样式    (官网地址🗺)  https://angular.cn/guide/component-styles
+    1. 元素据 中的样式
+        写在@Component 中  @Component{....style:[]}
+        ng generate component hero-app --inline-style  -- 生成 style 属性
+    2. 绑定外部 的css 文件 (最常用的方法😄)
+        styleUrls: [./.....css]
+    3. 模板内部的样式
+        若html 部分写在 template 内部 , 可在template 中写 <style></style> 
+        也可以使用link标签
+
+    4. css中使用@import导入外部的css 文件 (最常用的方法😄)
+        导入 font-awesome 
+        ① npm install font-awesome 
+        ② 打开 src/styles.css 中 @import '~font-awesome/css/font-awesome.css';
+            这样所有组件中 都可以使用font-awesome了
+
+三. 自定义的元素
+    1. 
+
+
+四. 指令  (官网地址🗺)  https://angular.cn/guide/attribute-directives
+          (本机实例地址 💻) E:\Google DownLoad\angular\toh-pt0\src\app\app.component.html
+    1. 属性型指令
+         用处: 改变一个元素的外观
+         用法:  一个改变元素字体颜色的属性指令
+            1) 新建属性指令
+                ng g directive highLight
+
+            2) 打开highLight.directive.ts 发现 👇
+                selector:'[appHighLight]' ;
+                这个appHighLight 就是我们定义好的一个属性 可以直接放到元素标签中使用
+
+            3) 定义 appHighLight 的样式
+                导入 ElementRef(操作Dom元素) , HostListener(监听元素中的事件) , Input(使属性公有化)
+                import {  ElementRef , HostListener , Input } from '@angular/core'
+
+                constructor(el: ElementRef) {
+                    el.nativeElement.style.backgroundColor = 'yellow';
+                    //背景颜色为黄色
+                }
+
+                @HostListener('mouseenter')MouseEnter(){
+                    ....
+                    //鼠标移入dom触发的事件
+                }
+
+                @Input('appHighLight') highLight: string ;
+                    highLight 是指令中的属性 用来接受设置的颜色
+                        此外 highLight 在ts文件里叫 highLight  在其他组件 都是叫 appHighLight
+            
+            4) 此时 appHighLight 就可以使用了
+                <p appHighLight> LiaDrin Javis<p>
+                <p [appHighLight]="'cyan'">  设置属性指令中 highLight 为 cyan(青色)
+
+                ps: 元素是否要用@Input
+                    当它出现在等号右侧的模板表达式中时，它属于模板所在的组件，不需要 @Input 装饰器。
+                    当它出现在等号左边的方括号（[ ]）中时，该属性属于其它组件或指令，它必须带有 @Input 装饰器。
+
+--------day9--------
+一. 结构型指令      (官网地址🗺)    https://www.angular.cn/guide/structural-directives
+        (本机实例地址💻) E:\Google DownLoad\angular\toh-pt0\src\app\app.component.html
+
+    定义: 带有 * , 塑造或者重塑DOM结构 , 添加或者移除 元素
+    *ngIf
+    ===> "*": *ngIf 属性 翻译成一个 <ng-template> 元素 并用它来包裹宿主元素
+    命名规则:
+        指令的拼写形式: 大驼峰(引用指令的类名)--NgIf  小驼峰(引用指令的属性名)--ngIf
+        属性和工作原理时引用指令的类名，在描述如何在 HTML 模板中把该指令应用到元素时，引用指令的属性名
+
+    *ngFor
+    ===> angular 的微语法  不过 还是解析 到了 <ng-template>中
+        模板输入变量    在单个实例模板上引用该值 
+        模板引用变量    整个模板都可以使用
+
+    *** 一个宿主元素只能 有一个 结构型指令 但可以有很多 属性型指令 
+    ===> <ng-container>  在此标签中写上 *ngIf *ngFor 的命令 ---> 判断 循环出显示的信息
+            <ng-container> 只会显示其中的内容 本身标签不会显示在网页中  也不会影响模板的结构
+
+二. 获取某个指令 (在模板 以及 ts文件中获取)
+    在指令@Directive({ ..., ..., exportAs: calmColor }) 定义 exportAs 属性 
+    后在模板 使用指令的标签中 定义 #name = calmColor 
+    然后 在 ts的文件中 @ViewChild('name')name: 指令名 ;
+    通过 name 来访问指令中的方法 及 变量 
+
+~~
+二. 管道
+    将从后台获取的资料 进行数据转换 
+    使用方式 {{ data | date }}  在pipe中添加参数 {{ data | mypipe:para1:para2}}
+    {{ data | json }} 将一个数据 json化 显示到页面上 适合拿来除错
+
+    2.自定义pipe
+        指令: ng g p mypipe
+        实现其中的 transform() 方法  把要返回的结果return 回去
+    3.impure
+        在@pipe decorator 中定义 
+        @Pipe{
+            name: 'todoDone',
+            pure: false ,
+        }
+        可以对引用型 数据的变更 进行更多频繁的检测
+
+    补充: 1. 在angular 中 应用变量指向另外的 引用型数据 angular才会进行变更检测
+          2.  基本数据类型 数值变化的时候 angular 会去检测变更
+
+
+
+--------day10--------
+一. Observable 
+    定义：接受一个 observer对象 返回一个函数
+    1. Observable 是个函数
+    2. observer对象 中有 next() error() complete() 方法
+    3. 返回一个取消订阅的函数 (cancellation function)
+
+
+项目打包 ： ng build --prod --aot
+
+
+--------day13--------
+angular 中*ngIf 的else 用法
+    <div>Name: <span *ngIf="name; else noData">name</span></div>
+    <div>Ange: <span *ngIf="age; else noData">age</span><div>
+    <ng-template #noData><span>---</span></ng-template>
+    当没有 name age 的时候 就显示 ng-template 中的内容
+
+entryComponents: []
+
+    把内部 放入declaration中 但没有在模板中 使用 模板放入其中
+
+思考一下 *ngIf  *ngComponentOutlet 
+    多个*ngIf 被 一个 *ngComponentOutlet 所替代了  
+    类似于编程语言中的  if else 与 switch 
+
+--------day14--------
+$event.target 类型为 HTMLInputElement
+有关数据操作的函数 都应该放到 service 中
+
+
+
+Angular 的指令
+    ng new 
+    1. ng new cName --skip-git  建立的模板 没有git管理
+    2. ng new cName --style=scss 把建立模板的 css 文件 变成 scss 文件
+    3. ng new cName --routing 建立一个路由管理的模板
+    4. ng new cName --prefix=APP 所有模板的名字前缀发生变化 <APP-cName></APP-cName>
+    5. ng new cName --skip-tests 所有模板中 会省略 .spec 的文件
+
+    ng generate/g <schematic> <name>
+    schematic 分类
+    --> class component directive enum guard interface module pipe service 
+
+    ng serve 
+    1. ng serve --open  angular会自动打开浏览器localhost:4200
+    2. ng serve --port  设置angular运行的端口号 例如: ng serve --port 4100  
+    3. ng serve --proxy-config 解决 cors 问题 例如: ng serve --proxy-config proxy.config.json
+    ps: 若是每次启动过于麻烦  则可以打开 package.json 把参数设置在 scripts 中 
+        例如:  "scripts": {
+                    "lint": "tslint ./src/**/*.ts -t verbose",
+                    "start": "ng serve --open",
+                    "test": "ng test",
+                    "build": "ng build --prod",
+                    "e2e": "ng e2e",
+                    "ng": "ng"
+                 },
+         每次启动时 输入 npm start 
+
+    ng build 
+    1. ng build --prod   使用Production Mode打包 编译 
+    2. ng build --source-map 打包出来的档案会有 source map
+
+--------day15--------
+angular 开发项目的流程
+1. 分析整体框架 明确路由
+2. 建立 组件 以及路由(一个组件, 一个路由) --> 延迟载入
+    1). 建立路由对象文件
+    2). 
+
+
+--------day16--------
+一.angular 的生命周期
+1. OnChange()
+    定义: 当元素有@Input 且从外部通过属性绑定 传入值的时候 以及这个值发生变化的时候 就会被调用
+            OnChange() 会在 OnInit() 之前调用
+
+2. OnInit() 
+    定义：初始化操作 只执行一次
+
+3. DoCheck() 
+    定义： angular 的 OnChange() 判断值的改变的时候只是判断它的 引用地址 是否变化 
+            如果要检测 引用对象中的值时候 则要添加 DoCheck() 方法 
+
+4. contentInit()  contentChecked()
+    定义：发生在子组件内部 contentInit() 后 可以查到父组件给子组件传递的值
+            如何获取父组件的值? 
+            使用 @ContentChild 获得传来的实体或子元件    例如: @ContentChild('button') 获得传来的 button 标签
+                @ContentChildren 获得传来的所有实体的查询列表
+         
+         contentChecked() 在父组件把所有值传给 子组件时触发
+                
+5. AfterViewInit() 与 AfterViewChecked() 
+    定义：方法发生在父组件的内部 父组件的子组件在 AfterViewInit() 后被实例化  
+            如何获得子组件?
+            使用 @ViewChild('button')  子组件中 button 的标签
+                @ViewChild(children)   获取了整个子组件
+                @ViewChildren(childComponent)   获取整个子组件的数组
+
+6. OnDestroy() 
+    定义：元素不使用时 会调用此方法 通常来处理rxjs中的退订动作
+
+
+二. ngModule中的组件含义
+    import: [] 数组中导入其他模块
+    declarations: [] 放那些有关 在模板用到的东西 例如 模板 , 指令(directive) , 管道(pipe)属性
+    exports: [] 有些模板 想要到其他模块中使用 则要放到 exports 这个数组中
+    providers: [] 这个数组 里放置用到的服务(serivce)  
+    bootstrap: [] 里面放置的原件 会被自动启动
+
+    补充一点: 这里的模板就是组件中的 html文件 
+
+三. 模板化的高效利用
+        将一些被循环利用的 component 放入 shareModule 中 并 exports 
+        其他 module 要使用这个 component 只需要 import shareModule 就可以了
+    单例 服务(service)
+        angular 6.0 之前 把该服务放入 coreModule 中 再把 coreModule 放到 appModule 中
+        angular 6.0 之后 新生成的服务  providedIn: 'root'  
+        好处: 服务(service) 为单例
+
+
+
+
+
+          

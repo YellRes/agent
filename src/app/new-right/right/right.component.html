@@ -8,7 +8,6 @@
               <th><span>文件名</span></th>
               <th>操作</th>
         </thead>
-        
 
         <tbody>
             <tr style="box-shadow:none;">
@@ -20,25 +19,25 @@
             <tr *ngFor="let i of newFileArr ">
 
                 <!--  文件夹有不同的图标 -->
-                <td *ngIf="i.isFile && i"><i class="fa fa-file-o"  ></i> 
+                <td *ngIf="i.isFile && i"><i class="fa fa-file-o"  ></i>
                     <label>{{i.name}}</label>
                 </td>
-                <td *ngIf="!(i.isFile && i)" style="cursor: pointer;"  (click)="openFile(i)"><i class="fa fa-folder" ></i> 
+                <td *ngIf="!(i.isFile && i)" style="cursor: pointer;"  (click)="openFile(i)"><i class="fa fa-folder" ></i>
                     <label style="cursor: pointer;">{{i.name}}</label>
                 </td>
-               
-                
+
+
                 <!-- <td *ngIf="(i.isTxt==1)"><i class="fa fa-download" title="下载"></i></td> -->
                 <td *ngIf="i.isFile && i"><i class="fa fa-download" (click)="download(i)" title="下载"></i></td>
                 <td *ngIf="!(i.isFile && i)"><i>--</i></td>
 
 
             </tr>
-           
-               
-            
+
+
+
         </tbody>
-     
+
     </table>
-     
+
   </div>

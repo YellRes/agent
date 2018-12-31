@@ -4,12 +4,12 @@ import { RouterModule,Routes} from '@angular/router' ;
 import { LeftComponent } from '../left/left.component' ;
 
 import { NewRightComponent } from '../new-right/new-right.component' ;
-import { RightAddServerComponent } from '../right-add-server/right-add-server.component' ;
+import { RightAddServerComponent } from '../new-right/right-add-server/right-add-server.component' ;
 
 
 
 const ChildRoutes : Routes= [
- { path: '', redirectTo: '/index', pathMatch: 'full'  },
+ { path: '', redirectTo: 'index', pathMatch: 'full'  },
   {
     path: 'index' ,
     component: LeftComponent  ,
@@ -18,17 +18,14 @@ const ChildRoutes : Routes= [
         path:'right',
         component: NewRightComponent ,
       },
-      {
-        path:'add',
-        component: RightAddServerComponent ,
-      }
+
     ]
 
     // path: 'right',
-    // component: NewRightComponent 
+    // component: NewRightComponent
   },
-  
- 
+
+
 ]
 
 @NgModule({
@@ -38,6 +35,6 @@ const ChildRoutes : Routes= [
   ],
   declarations: []
 })
-export class MyModelModule { 
-  
+export class MyModelModule {
+
 }
