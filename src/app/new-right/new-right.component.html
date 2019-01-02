@@ -1,0 +1,51 @@
+<!-- <div class="top">
+    服务器管理
+</div> -->
+<br><br><br><br>
+
+<div class="container-fluid">
+    <form action="" class="form-inline"  #addForm="ngForm">
+        <div class="form-group">
+
+            <div class="col-md-10 ">
+                <input type="text" id="addServer" required
+                     class="form-control" [(ngModel)]="ipName"
+                      name="serverName"
+                     placeholder="输入IP地址添加服务器">
+            </div>
+
+        </div>
+        <button class="btn btn-info " (click)="addServer()" [disabled]="!addForm.form.valid" >确认</button>
+        <button class="btn btn-primary" (click)="clear()" style="margin-left: 10px ">清除</button>
+    </form>
+</div>
+
+
+<!-- <div class="path">
+        {{fileStr}}
+    </div> -->
+<div id="container">
+    <ul class="server" >
+        <ng-container  *ngFor="let i of tapArr ;let num = index ;">
+            <ng-container *ngIf="num === 0">
+                <li (click)="change(i,num)" [class.change1]="isChange1Class === i">{{i}} </li>
+            </ng-container>
+
+            <ng-container *ngIf="!(num === 0)">
+                <li (click)="change(i,num)" [class.change1]="isChange1Class === i">
+                    {{i}} <i class="fa fa-times" (click)='deleteServer(num)'></i>
+                </li>
+            </ng-container>
+        </ng-container>
+
+        <!-- <li (click)="change(i,num)" [class.change1]="isChange1Class === i" *ngFor="let i of tapArr ;let num = index ;">{{i}} </li> -->
+
+    </ul>
+
+    <div class="contain">
+        <div class="show" [class.change2]="isChange1Class2">
+            <app-right-search></app-right-search>
+            <app-right></app-right>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,14 @@
+*{
+  margin: 0 ;
+  padding: 0 ;
+}
+
+app-left{
+  width: 22% ;
+  display: inline-block ;
+}
+
+div{
+  width: 78% ;
+  display: inline-block ;
+}

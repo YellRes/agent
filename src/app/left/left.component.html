@@ -1,0 +1,26 @@
+<div class="left" [class.show]="isActive1=='show'">
+
+  <ul>
+    <li (click)="isBlue2()" [class.blue]="isBlueClass2"><i class="fa fa-align-justify" (click)="isBlue2()" [class.blue1]="isBlueClass2"></i>维护服务器 
+    
+    </li>
+    <ul  class="appN" [class.show3]="isActive6=='show3'">
+        <li (click)="isBlue3()" [class.blue]="isBlueClass3" routerLink='./right' > 服务器列表</li>
+        <!-- <li (click)="isBlue3()" [class.blue]="isBlueClass3" routerLink='./add' > 添加服务器</li> -->
+
+      </ul>
+ 
+  </ul>
+  
+  <button (click)="isShow()" class="botton">{{smallLogo}} </button>
+</div>
+
+<div class="right" [class.show2]="isActive2=='show2'"> 
+    <router-outlet></router-outlet>
+</div>
+<!-- <div class="appR" [class.show3]="isActive3=='show3'">
+  
+</div> -->
+<!-- <div class="appL"[class.show3]="isActive4=='show3'"><router-outlet></router-outlet></div> -->
+
+

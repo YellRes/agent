@@ -1,0 +1,85 @@
+li{
+    float: left;
+    margin-top: 18px;
+    margin-right: 30px;
+    height:60px;
+    position: relative;
+    /* top: -18px; */
+    line-height: 60px;
+    list-style-type: none;
+    
+  }
+  .hid li{
+      visibility: hidden;
+  }
+  .denglu{
+    width: 180px;
+    transition: all 0.3s ease;
+
+  }
+  /* .denglu:hover{
+    background-color: white;
+    color: #666666;
+  } */
+  /* .hid{
+    visibility: hidden;
+
+    border: 1px solid #eeeeee;width: 350px;
+    height: 0px;
+    background-color:white;
+    margin-left: -174px;
+    position: relative;
+    top: 1px;
+    z-index: 1;
+    box-shadow: 2px 2px 0 0 #666666;
+    transition: all 0.3s ease;
+
+  } */
+  .denglu:hover .hid{
+    height: 160px;
+    visibility: visible;
+  }
+  .denglu:hover .hid li{
+    visibility: visible;
+
+  }
+  .denglu:hover .hid button{
+    height: 30px;
+    opacity: 1;
+    top: 0px;
+  }
+ 
+  /* .denglu:hover .button2{
+    visibility: visible;
+
+  } */
+  .button1{
+    background-color:#3583f7;
+    color: white;
+    border: 1px solid #3583f7;
+    border-radius: 3px;
+    margin-left: 0px;height: 0px;
+    width: 120px; 
+    transition: all 0.3s ease;
+    opacity: 0;
+    position: relative;
+    top: -120px;
+    /* visibility: hidden; */
+
+  }
+  .button2{
+    background-color:#3583f7;
+    color: white;
+    border: 1px solid #3583f7;
+    border-radius: 3px;
+    margin-left: 50px;
+    height: 0px;
+    width: 100px; 
+    transition: all 0.3s ease;
+    position: relative;
+    opacity: 0;
+    top: -120px;
+
+    /* visibility: hidden; */
+    
+  }
